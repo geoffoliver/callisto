@@ -5,13 +5,9 @@
 	"devDependencies": {
 		"gulp": "latest",
 		"gulp-autoprefixer": "latest",
-		"gulp-concat": "latest",
 		"gulp-flatten": "latest",
 		"gulp-imagemin": "latest",
 		"gulp-sass": "latest",
-		"gulp-minify-css": "latest",
-		"gulp-notify": "latest",
-		"gulp-uglify": "^1.1.0",
 		"gulp-livereload": "latest",
 		"tiny-lr": "^0.1.5"
 	}

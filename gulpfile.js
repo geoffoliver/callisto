@@ -1,18 +1,13 @@
-var gulp = require('gulp'),
-	sass = require('gulp-sass'),
-	autoprefixer = require('gulp-autoprefixer'),
-	minifycss = require('gulp-minify-css'),
-	refresh = require('gulp-livereload'),
-	lr = require('tiny-lr'),
-	notify = require('gulp-notify'),
-	uglify = require('gulp-uglify'),
-	fs = require('fs'),
-	config = {
+var gulp          = require('gulp'),
+	sass          = require('gulp-sass'),
+	autoprefixer  = require('gulp-autoprefixer'),
+	refresh       = require('gulp-livereload'),
+	fs            = require('fs'),
+	server        = require('tiny-lr')(),
+	config        = {
 		'src': fs.realpathSync('./')+'/src/resources',
 		'dst': fs.realpathSync('./')+'/webroot'
 	};
-
-var server = lr();
 
 gulp.task('livereload', function(){
 	server.listen(35729, function(err){
@@ -30,6 +25,12 @@ gulp.task('fonts', function(){
 });
 
 gulp.task('styles', function(){
+	gulp.src(config.src+'/sass/*.scss').
+		pipe(sass({
+			outputStyle: 'compressed'
+		}).on('error', sass.logError)).
+		pipe(gulp.dest(config.dst+'/css')).
+		pipe(refresh(server));
 	return true;
 });
 
@@ -40,7 +41,6 @@ gulp.task('scripts', function(){
 gulp.task('bower', function(){
 	return gulp.src(config.src+'/vendor/**/*').
 		on('error', function(e){
-			notify('Error processing bower components');
 			console.log(e.message);
 			this.emit('end');
 			return;
@@ -57,8 +57,8 @@ gulp.task('images', function(){
 
 
 gulp.task('watch', ['livereload'], function(){
-	gulp.watch(config.src+'/sass/**/*.sass', ['styles']);
-	gulp.watch(config.src+'/js/**/*.js', ['scripts']);
+	gulp.watch(config.src+'/sass/*.scss', ['styles']);
+	//gulp.watch(config.src+'/js/*.js', ['scripts']);
 	gulp.watch(config.src+'/img/**/*', ['images']);
-	gulp.watch(config.src+'/bower/**', ['bower']);
+	//gulp.watch(config.src+'/bower/**/*', ['bower']);
 });
