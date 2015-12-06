@@ -5,16 +5,17 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
-use Callisto\Model\Entity\Reader;
+use Callisto\Model\Entity\Membership;
 use SoftDelete\Model\Table\SoftDeleteTrait;
 
 /**
- * Readers Model
+ * Memberships Model
  *
+ * @property \Cake\ORM\Association\BelongsTo $Subscriptions
+ * @property \Cake\ORM\Association\BelongsTo $Readers
  */
-class ReadersTable extends Table
+class MembershipsTable extends Table
 {
-
 	use SoftDeleteTrait;
 
     /**
@@ -27,16 +28,20 @@ class ReadersTable extends Table
     {
         parent::initialize($config);
 
-        $this->table('readers');
-        $this->displayField('name');
+        $this->table('memberships');
+        $this->displayField('id');
         $this->primaryKey('id');
 
-		$this->addBehavior('Timestamp');
+        $this->addBehavior('Timestamp');
 
-		$this->hasMany('Membership', [
-			'foreignKey' => 'reader_id'
-		]);
-
+        $this->belongsTo('Subscriptions', [
+            'foreignKey' => 'subscription_id',
+            'joinType' => 'INNER'
+        ]);
+        $this->belongsTo('Readers', [
+            'foreignKey' => 'reader_id',
+            'joinType' => 'INNER'
+        ]);
     }
 
     /**
@@ -52,17 +57,8 @@ class ReadersTable extends Table
             ->allowEmpty('id', 'create');
 
         $validator
-            ->requirePresence('name', 'create')
-            ->notEmpty('name');
-
-        $validator
-            ->add('email', 'valid', ['rule' => 'email'])
-            ->requirePresence('email', 'create')
-            ->notEmpty('email');
-
-        $validator
-            ->requirePresence('password', 'create')
-            ->notEmpty('password');
+            ->add('deleted', 'valid', ['rule' => 'datetime'])
+            ->allowEmpty('deleted');
 
         return $validator;
     }
@@ -76,7 +72,8 @@ class ReadersTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->isUnique(['email']));
+        $rules->add($rules->existsIn(['subscription_id'], 'Subscriptions'));
+        $rules->add($rules->existsIn(['reader_id'], 'Readers'));
         return $rules;
     }
 }

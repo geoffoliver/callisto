@@ -37,7 +37,12 @@ class SitesTable extends Table
         $this->belongsTo('Publishers', [
             'foreignKey' => 'publisher_id',
             'joinType' => 'INNER'
-        ]);
+		]);
+
+		$this->hasMany('Subscriptions', [
+			'foreignKey' => 'subscription_id',
+			'joinType' => 'INNER'
+		]);
     }
 
     /**

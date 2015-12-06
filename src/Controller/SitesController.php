@@ -22,7 +22,8 @@ class SitesController extends AppController
 		}
 
 		$conditions = [
-			'id' => $siteId,
+			'id'           => $siteId,
+			'active'       => true,
 			'publisher_id' => $publisherId
 		];
 
@@ -44,6 +45,10 @@ class SitesController extends AppController
 				}
 			])
 			->first();
+
+		if(!$site->publisher){
+			return $this->response;
+		}
 
 		$this->response->body(print_r($site->domain, true));
 

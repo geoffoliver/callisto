@@ -5,16 +5,17 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
-use Callisto\Model\Entity\Reader;
+use Callisto\Model\Entity\Subscription;
 use SoftDelete\Model\Table\SoftDeleteTrait;
 
 /**
- * Readers Model
+ * Subscriptions Model
  *
+ * @property \Cake\ORM\Association\BelongsTo $Sites
+ * @property \Cake\ORM\Association\HasMany $Memberships
  */
-class ReadersTable extends Table
+class SubscriptionsTable extends Table
 {
-
 	use SoftDeleteTrait;
 
     /**
@@ -27,16 +28,19 @@ class ReadersTable extends Table
     {
         parent::initialize($config);
 
-        $this->table('readers');
+        $this->table('subscriptions');
         $this->displayField('name');
         $this->primaryKey('id');
 
-		$this->addBehavior('Timestamp');
+        $this->addBehavior('Timestamp');
 
-		$this->hasMany('Membership', [
-			'foreignKey' => 'reader_id'
-		]);
-
+        $this->belongsTo('Sites', [
+            'foreignKey' => 'site_id',
+            'joinType' => 'INNER'
+        ]);
+        $this->hasMany('Memberships', [
+            'foreignKey' => 'subscription_id'
+        ]);
     }
 
     /**
@@ -56,13 +60,8 @@ class ReadersTable extends Table
             ->notEmpty('name');
 
         $validator
-            ->add('email', 'valid', ['rule' => 'email'])
-            ->requirePresence('email', 'create')
-            ->notEmpty('email');
-
-        $validator
-            ->requirePresence('password', 'create')
-            ->notEmpty('password');
+            ->add('deleted', 'valid', ['rule' => 'datetime'])
+            ->allowEmpty('deleted');
 
         return $validator;
     }
@@ -76,7 +75,7 @@ class ReadersTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->isUnique(['email']));
+        $rules->add($rules->existsIn(['site_id'], 'Sites'));
         return $rules;
     }
 }
