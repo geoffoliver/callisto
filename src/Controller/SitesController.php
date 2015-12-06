@@ -1,6 +1,7 @@
 <?php
 namespace Callisto\Controller;
 
+use Cake\Utility\Hash;
 use Callisto\Controller\AppController;
 
 /**
@@ -11,12 +12,16 @@ use Callisto\Controller\AppController;
 class SitesController extends AppController
 {
 
-	public function loadScript($siteAndPublisher=null){
-		$this->RequestHandler->renderAs($this, 'javascript');
-		$this->RequestHandler->respondAs('javascript');
+	public function loadScript(){
+		$this->RequestHandler->renderAs($this, 'json');
+		$this->RequestHandler->respondAs('json');
+		$this->response->body(__('{}'));
 
-		$this->response->body(__('/** Nothing to see here **/'));
-
+		if(!$this->request->is('post')){
+			return $this->response;
+		}
+	
+		$siteAndPublisher = Hash::get($this->request->data, 'site');
 		if(!$siteAndPublisher || strlen($siteAndPublisher) != 73){
 			return $this->response;
 		}
@@ -28,9 +33,8 @@ class SitesController extends AppController
 		if(!$siteId || !$publisherId){// || !$referer || $referer == '/'){
 			return $this->response;
 		}
+		$referer = parse_url($this->request->referer());
 		/*
-		$referer = trim(preg_replace('/^http[s]?:\/\//i', '', $referer), '/');
-		
 		if(strpos($referer, '/') !== false){
 			$ref = explode('/', $referer);
 			$referer = $ref[0];
@@ -58,14 +62,18 @@ class SitesController extends AppController
 						'Publishers.active' => true
 					]);
 				},
+				'Ads'
 			])
 			->first();
 
 		if(!$site->publisher){
 			return $this->response;
 		}
-
-		$this->response->body('alert("Hiya");');
+		
+		$this->response->header('Access-Control-Allow-Origin', Hash::get($referer, 'scheme').'://'.Hash::get($referer, 'host'));
+		$this->response->body(json_encode([
+			'ads' => $site->ads
+		]));
 
 		return $this->response;
 	}
