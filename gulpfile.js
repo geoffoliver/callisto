@@ -2,6 +2,7 @@ var gulp          = require('gulp'),
 	sass          = require('gulp-sass'),
 	autoprefixer  = require('gulp-autoprefixer'),
 	refresh       = require('gulp-livereload'),
+	uglify        = require('gulp-uglify'),
 	fs            = require('fs'),
 	server        = require('tiny-lr')(),
 	config        = {
@@ -54,7 +55,6 @@ gulp.task('images', function(){
 		pipe(imagemin({ optimizationLevel: 3, progressive: true, interlaced: true})).
 		pipe(gulp.dest(config.dst+'/img'));
 });
-
 
 gulp.task('watch', ['livereload'], function(){
 	gulp.watch(config.src+'/sass/*.scss', ['styles']);

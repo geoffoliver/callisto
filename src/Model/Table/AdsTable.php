@@ -5,18 +5,15 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
-use Callisto\Model\Entity\Site;
-use SoftDelete\Model\Table\SoftDeleteTrait;
+use Callisto\Model\Entity\Ad;
 
 /**
- * Sites Model
+ * Ads Model
  *
- * @property \Cake\ORM\Association\BelongsTo $Publishers
+ * @property \Cake\ORM\Association\BelongsTo $Sites
  */
-class SitesTable extends Table
+class AdsTable extends Table
 {
-
-	use SoftDeleteTrait;
 
     /**
      * Initialize method
@@ -28,24 +25,16 @@ class SitesTable extends Table
     {
         parent::initialize($config);
 
-        $this->table('sites');
+        $this->table('ads');
         $this->displayField('name');
         $this->primaryKey('id');
 
         $this->addBehavior('Timestamp');
 
-        $this->belongsTo('Publishers', [
-            'foreignKey' => 'publisher_id',
+        $this->belongsTo('Sites', [
+            'foreignKey' => 'site_id',
             'joinType' => 'INNER'
-		]);
-
-		$this->hasMany('Subscriptions', [
-			'foreignKey' => 'site_id'
-		]);
-
-		$this->hasMany('Ads', [
-			'foreignKey' => 'site_id'
-		]);
+        ]);
     }
 
     /**
@@ -65,8 +54,12 @@ class SitesTable extends Table
             ->notEmpty('name');
 
         $validator
-            ->requirePresence('domain', 'create')
-            ->notEmpty('domain');
+            ->requirePresence('code', 'create')
+            ->notEmpty('code');
+
+        $validator
+            ->add('deleted', 'valid', ['rule' => 'datetime'])
+            ->allowEmpty('deleted');
 
         return $validator;
     }
@@ -80,7 +73,7 @@ class SitesTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->existsIn(['publisher_id'], 'Publishers'));
+        $rules->add($rules->existsIn(['site_id'], 'Sites'));
         return $rules;
     }
 }

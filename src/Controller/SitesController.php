@@ -11,16 +11,31 @@ use Callisto\Controller\AppController;
 class SitesController extends AppController
 {
 
-	public function loadScript($siteId=null, $publisherId=null){
+	public function loadScript($siteAndPublisher=null){
 		$this->RequestHandler->renderAs($this, 'javascript');
 		$this->RequestHandler->respondAs('javascript');
 
-		$this->response->body(__('/** Invalid Site **/'));
+		$this->response->body(__('/** Nothing to see here **/'));
 
-		if(!$siteId || !$publisherId){
+		if(!$siteAndPublisher || strlen($siteAndPublisher) != 73){
 			return $this->response;
 		}
 
+		$siteId = trim(substr($siteAndPublisher, 0, 36));
+		$publisherId = trim(substr($siteAndPublisher, -36));
+		//$referer = $this->request->referer();
+
+		if(!$siteId || !$publisherId){// || !$referer || $referer == '/'){
+			return $this->response;
+		}
+		/*
+		$referer = trim(preg_replace('/^http[s]?:\/\//i', '', $referer), '/');
+		
+		if(strpos($referer, '/') !== false){
+			$ref = explode('/', $referer);
+			$referer = $ref[0];
+		}
+		*/
 		$conditions = [
 			'id'           => $siteId,
 			'active'       => true,
@@ -30,7 +45,7 @@ class SitesController extends AppController
 		if(!$this->Sites->exists($conditions)){
 			return $this->response;
 		}
-		
+
 		$site = $this->Sites->find('all')
 			->where([
 				'Sites.id'           => $siteId,
@@ -42,7 +57,7 @@ class SitesController extends AppController
 					return $q->where([
 						'Publishers.active' => true
 					]);
-				}
+				},
 			])
 			->first();
 
@@ -50,7 +65,7 @@ class SitesController extends AppController
 			return $this->response;
 		}
 
-		$this->response->body(print_r($site->domain, true));
+		$this->response->body('alert("Hiya");');
 
 		return $this->response;
 	}

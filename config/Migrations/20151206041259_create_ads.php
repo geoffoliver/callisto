@@ -29,11 +29,6 @@ class CreateAds extends AbstractMigration
             'default' => null,
             'null' => false,
         ]);
-        $table->addColumn('identifier', 'string', [
-            'default' => null,
-            'limit' => 255,
-            'null' => false,
-        ]);
         $table->addColumn('code', 'text', [
             'default' => null,
             'null' => false,

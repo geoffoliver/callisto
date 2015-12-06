@@ -3,3 +3,5 @@
 /tmp/*
 /logs/*
 .vagrant/*
+/node_modules/*
+/src/resources/vendor/*
