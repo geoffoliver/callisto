@@ -2,6 +2,7 @@
 namespace Callisto\Controller;
 
 use Callisto\Controller\AppController;
+use Cake\Utility\Hash;
 
 /**
  * Sites Controller
@@ -124,7 +125,6 @@ class SitesController extends AppController
 
 		$siteId = trim(substr($siteAndPublisher, 0, 36));
 		$publisherId = trim(substr($siteAndPublisher, -36));
-		//$referer = $this->request->referer();
 
 		if(!$siteId || !$publisherId){// || !$referer || $referer == '/'){
 			return $this->response;
@@ -165,7 +165,11 @@ class SitesController extends AppController
 		if(!$site->publisher){
 			return $this->response;
 		}
-		
+
+		/*if(!preg_match('/'.$site->domain.'$/', Hash::get($referer, 'host'))){
+			return $this->response;
+		}*/
+
 		$this->response->header('Access-Control-Allow-Origin', Hash::get($referer, 'scheme').'://'.Hash::get($referer, 'host'));
 		$this->response->body(json_encode([
 			'ads' => $site->ads
