@@ -166,9 +166,9 @@ class SitesController extends AppController
 			return $this->response;
 		}
 
-		/*if(!preg_match('/'.$site->domain.'$/', Hash::get($referer, 'host'))){
+		if(!preg_match('/'.$site->domain.'$/', Hash::get($referer, 'host'))){
 			return $this->response;
-		}*/
+		}
 
 		$this->response->header('Access-Control-Allow-Origin', Hash::get($referer, 'scheme').'://'.Hash::get($referer, 'host'));
 		$this->response->body(json_encode([
