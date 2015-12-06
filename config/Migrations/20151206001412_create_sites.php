@@ -1,7 +1,7 @@
 <?php
 use Migrations\AbstractMigration;
 
-class CreateReaders extends AbstractMigration
+class CreateSites extends AbstractMigration
 {
 
     public $autoId = false;
@@ -15,7 +15,7 @@ class CreateReaders extends AbstractMigration
      */
     public function change()
     {
-        $table = $this->table('readers');
+        $table = $this->table('sites');
         $table->addColumn('id', 'uuid', [
             'default' => null,
             'null' => false,
@@ -25,16 +25,19 @@ class CreateReaders extends AbstractMigration
             'limit' => 255,
             'null' => false,
         ]);
-        $table->addColumn('email', 'string', [
+        $table->addColumn('domain', 'string', [
             'default' => null,
             'limit' => 255,
             'null' => false,
         ]);
-        $table->addColumn('password', 'string', [
+        $table->addColumn('publisher_id', 'uuid', [
             'default' => null,
-            'limit' => 255,
             'null' => false,
-        ]);
+		]);
+		$table->addColumn('active', 'boolean', [
+			'default' => true,
+			'null' => false
+		]);
         $table->addColumn('created', 'datetime', [
             'default' => null,
             'null' => false,

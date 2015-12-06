@@ -1,5 +1,5 @@
 {
-    "name": "plan8studios/callisto",
+    "name": "plan8studios/calisto",
     "description": "Callisto reader subscriber platform",
     "homepage": "http://www.plan8studios.com",
     "type": "project",
@@ -9,7 +9,8 @@
         "cakephp/cakephp": "~3.1",
         "mobiledetect/mobiledetectlib": "2.*",
         "cakephp/migrations": "~1.0",
-        "cakephp/plugin-installer": "*"
+        "cakephp/plugin-installer": "*",
+        "pgbi/cakephp3-soft-delete": "~1.0"
     },
     "require-dev": {
         "psy/psysh": "@stable",
