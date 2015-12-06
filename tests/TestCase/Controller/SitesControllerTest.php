@@ -17,7 +17,12 @@ class SitesControllerTest extends IntegrationTestCase
      */
     public $fixtures = [
         'app.sites',
-        'app.publishers'
+        'app.publishers',
+        'app.subscriptions',
+        'app.memberships',
+        'app.readers',
+        'app.membership',
+        'app.ads'
     ];
 
     /**

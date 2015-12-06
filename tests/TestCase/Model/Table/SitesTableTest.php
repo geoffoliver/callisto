@@ -18,7 +18,12 @@ class SitesTableTest extends TestCase
      */
     public $fixtures = [
         'app.sites',
-        'app.publishers'
+        'app.publishers',
+        'app.subscriptions',
+        'app.memberships',
+        'app.readers',
+        'app.membership',
+        'app.ads'
     ];
 
     /**
@@ -71,6 +76,66 @@ class SitesTableTest extends TestCase
      * @return void
      */
     public function testBuildRules()
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * Test query method
+     *
+     * @return void
+     */
+    public function testQuery()
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * Test deleteAll method
+     *
+     * @return void
+     */
+    public function testDeleteAll()
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * Test getSoftDeleteField method
+     *
+     * @return void
+     */
+    public function testGetSoftDeleteField()
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * Test hardDelete method
+     *
+     * @return void
+     */
+    public function testHardDelete()
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * Test hardDeleteAll method
+     *
+     * @return void
+     */
+    public function testHardDeleteAll()
+    {
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * Test restore method
+     *
+     * @return void
+     */
+    public function testRestore()
     {
         $this->markTestIncomplete('Not implemented yet.');
     }

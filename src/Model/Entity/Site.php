@@ -11,8 +11,12 @@ use Cake\ORM\Entity;
  * @property string $domain
  * @property string $publisher_id
  * @property \Callisto\Model\Entity\Publisher $publisher
+ * @property bool $active
  * @property \Cake\I18n\Time $created
  * @property \Cake\I18n\Time $modified
+ * @property \Cake\I18n\Time $deleted
+ * @property \Callisto\Model\Entity\Subscription[] $subscriptions
+ * @property \Callisto\Model\Entity\Ad[] $ads
  */
 class Site extends Entity
 {

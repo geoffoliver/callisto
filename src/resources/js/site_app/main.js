@@ -1,7 +1,7 @@
 require(['jquery'], function($){
-	
+
 	var App = (function(){
-		
+
 		function loadComplete(resp, st, xhr){
 			if(resp.hasOwnProperty('ads') && resp.ads){
 				var ad,

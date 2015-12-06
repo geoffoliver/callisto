@@ -6,17 +6,16 @@ use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 use Callisto\Model\Entity\Site;
-use SoftDelete\Model\Table\SoftDeleteTrait;
 
 /**
  * Sites Model
  *
  * @property \Cake\ORM\Association\BelongsTo $Publishers
+ * @property \Cake\ORM\Association\HasMany $Ads
+ * @property \Cake\ORM\Association\HasMany $Subscriptions
  */
 class SitesTable extends Table
 {
-
-	use SoftDeleteTrait;
 
     /**
      * Initialize method
@@ -37,15 +36,13 @@ class SitesTable extends Table
         $this->belongsTo('Publishers', [
             'foreignKey' => 'publisher_id',
             'joinType' => 'INNER'
-		]);
-
-		$this->hasMany('Subscriptions', [
-			'foreignKey' => 'site_id'
-		]);
-
-		$this->hasMany('Ads', [
-			'foreignKey' => 'site_id'
-		]);
+        ]);
+        $this->hasMany('Ads', [
+            'foreignKey' => 'site_id'
+        ]);
+        $this->hasMany('Subscriptions', [
+            'foreignKey' => 'site_id'
+        ]);
     }
 
     /**
@@ -67,6 +64,15 @@ class SitesTable extends Table
         $validator
             ->requirePresence('domain', 'create')
             ->notEmpty('domain');
+
+        $validator
+            ->add('active', 'valid', ['rule' => 'boolean'])
+            ->requirePresence('active', 'create')
+            ->notEmpty('active');
+
+        $validator
+            ->add('deleted', 'valid', ['rule' => 'datetime'])
+            ->allowEmpty('deleted');
 
         return $validator;
     }
