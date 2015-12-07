@@ -126,19 +126,12 @@ class SitesController extends AppController
 		$siteId = trim(substr($siteAndPublisher, 0, 36));
 		$publisherId = trim(substr($siteAndPublisher, -36));
 
-		if(!$siteId || !$publisherId){// || !$referer || $referer == '/'){
+		if(!$siteId || !$publisherId){
 			return $this->response;
 		}
 		$referer = parse_url($this->request->referer());
-		/*
-		if(strpos($referer, '/') !== false){
-			$ref = explode('/', $referer);
-			$referer = $ref[0];
-		}
-		*/
 		$conditions = [
 			'id'           => $siteId,
-			'active'       => true,
 			'publisher_id' => $publisherId
 		];
 
@@ -149,15 +142,10 @@ class SitesController extends AppController
 		$site = $this->Sites->find('all')
 			->where([
 				'Sites.id'           => $siteId,
-				'Sites.active'       => true,
 				'Sites.publisher_id' => $publisherId
 			])
 			->contain([
-				'Publishers' => function($q){
-					return $q->where([
-						'Publishers.active' => true
-					]);
-				},
+				'Publishers',
 				'Ads'
 			])
 			->first();

@@ -6,7 +6,7 @@ use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 use Callisto\Model\Entity\Site;
-
+use SoftDelete\Model\Table\SoftDeleteTrait;
 /**
  * Sites Model
  *
@@ -16,6 +16,7 @@ use Callisto\Model\Entity\Site;
  */
 class SitesTable extends Table
 {
+	use SoftDeleteTrait;
 
     /**
      * Initialize method

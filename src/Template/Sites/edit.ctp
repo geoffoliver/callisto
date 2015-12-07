@@ -25,7 +25,9 @@
             echo $this->Form->input('domain');
             echo $this->Form->input('publisher_id', ['options' => $publishers]);
             echo $this->Form->input('active');
-            echo $this->Form->input('deleted');
+			echo $this->Form->input('deleted', [
+				'empty' => true
+			]);
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>
